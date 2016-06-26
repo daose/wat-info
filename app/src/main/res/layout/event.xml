@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/eventLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+    <LinearLayout
+        android:id="@+id/voteDownLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/voteShirtButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:src="@drawable/fashion"
+            android:tint="@color/blue" />
+
+        <TextView
+            android:id="@+id/voteDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="shirt"
+            android:textColor="@color/blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/voteUpLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/voteDownLayout"
+        android:layout_toStartOf="@id/voteDownLayout"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/voteFoodButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:src="@drawable/ic_restaurant_black_24dp"
+            android:tint="@color/orange" />
+
+
+        <TextView
+            android:id="@+id/voteUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="food"
+            android:textColor="@color/orange" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/voteUpLayout"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/eventName"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/base02"
+            android:layout_height="wrap_content"
+            android:text="Company Name" />
+
+        <TextView
+            android:id="@+id/eventDate"
+            android:text="date"
+            android:textColor="@color/base01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/eventLocation"
+            android:layout_width="wrap_content"
+            android:textColor="@color/base01"
+            android:layout_height="wrap_content"
+            android:text="Location" />
+
+        <TextView
+            android:id="@+id/eventTime"
+            android:layout_width="wrap_content"
+            android:textColor="@color/base01"
+            android:layout_height="wrap_content"
+            android:text="Time" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

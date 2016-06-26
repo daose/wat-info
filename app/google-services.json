@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "521772509379",
+    "firebase_url": "https://watinfo-90a70.firebaseio.com",
+    "project_id": "watinfo-90a70",
+    "storage_bucket": "watinfo-90a70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521772509379:android:ace4f56e3bf0ef7a",
+        "android_client_info": {
+          "package_name": "com.daose.watinfo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521772509379-98lncvfje25boe0vk1g03i609ctr0j1m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY58h2KzpIDw_jdMylJVFNgiAtIE9lqpI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
