@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,23 +40,39 @@ public class EventListActivity extends AppCompatActivity implements EventListLis
     private Toolbar toolBar;
     private FirebaseDatabase db;
     private DataSnapshot ds;
+    private TextView dateHeader;
+    private ArrayList<Event> eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        Intent i = getIntent();
 
-        ArrayList<Event> eventList = (ArrayList<Event>) getIntent().getSerializableExtra("eventList");
-
+        this.eventList = (ArrayList<Event>) getIntent().getSerializableExtra("eventList");
         listView = (ListView) findViewById(R.id.listview);
         Toolbar toolBar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolBar);
+        dateHeader = (TextView) findViewById(R.id.dateHeader);
 
         EventArrayAdapter adapter = new EventArrayAdapter(getApplicationContext(), eventList);
         listView.addHeaderView((View) getLayoutInflater().inflate(R.layout.header, null));
         listView.setAdapter(adapter);
-        //setupDatabase();
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.d(LOG_TAG, "firstVisibleItem: " + firstVisibleItem);
+                updateDateHeader(firstVisibleItem);
+            }
+        });
+    }
+
+    private void updateDateHeader(int position) {
+        dateHeader.setText(eventList.get(position).getDate().toString());
     }
 
     @Override
@@ -80,6 +97,7 @@ public class EventListActivity extends AppCompatActivity implements EventListLis
 
     @Override
     public void onEventListReceived(ArrayList<Event> eventList) {
+        this.eventList = eventList;
         EventArrayAdapter adapter = new EventArrayAdapter(getApplicationContext(), eventList);
         if (listView.getHeaderViewsCount() == 0) {
             listView.addHeaderView((View) getLayoutInflater().inflate(R.layout.header, null));

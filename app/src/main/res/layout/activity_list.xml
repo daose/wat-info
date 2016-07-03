@@ -15,6 +15,15 @@
         android:theme="@style/InfoTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <TextView
+        android:id="@+id/dateHeader"
+        android:layout_width="match_parent"
+        android:text="Current Date"
+        android:textStyle="bold"
+        android:textColor="@color/base02"
+        android:background="@color/yellow"
+        android:layout_height="wrap_content" />
+
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/listview"

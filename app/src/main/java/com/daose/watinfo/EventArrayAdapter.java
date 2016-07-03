@@ -46,6 +46,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         this.eventList = eventList;
     }
 
+    public void appendEvents(ArrayList<Event> newEventList) {
+        eventList.addAll(newEventList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getViewTypeCount() {
         return RowType.values().length;
@@ -68,7 +73,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         final String LOG_TAG = "position: " + position;
         ViewHolder holder = null;
         RowType rowType = RowType.values()[getItemViewType(position)];
-        Log.d(LOG_TAG, "rowType: " + rowType.toString());
 
         if (convertView == null) {
             holder = new ViewHolder();
