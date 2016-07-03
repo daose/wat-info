@@ -1,6 +1,7 @@
 package com.daose.watinfo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by student on 25/06/16.
@@ -9,7 +10,8 @@ public class Event implements Serializable {
     private String name;
     private String time;
     private String location;
-    private String date;
+    //private String date;
+    private Date date;
     private String description;
     private long voteFood;
     private long voteShirt;
@@ -17,7 +19,7 @@ public class Event implements Serializable {
     private boolean isShirtVoted;
     //faculty, specification?
 
-    public Event(String name, String location, String time, String date) {
+    public Event(String name, String location, String time, Date date) {
         this.name = name;
         this.location = location;
         this.time = time;
@@ -38,12 +40,12 @@ public class Event implements Serializable {
         return isShirtVoted;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return this.date;
     }
 
     public String getDatabaseName() {
-        return this.name.replace('.', '_') + this.date.replace(',', '_');
+        return this.name.replace('.', '_');
     }
 
     public void setShirtVoted(boolean voted) {

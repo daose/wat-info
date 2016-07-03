@@ -14,8 +14,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Created by student on 26/06/16.
@@ -47,7 +52,7 @@ public class PopulateList {
     public void getEventList() {
         URL = URL_BASE + month;
         db = FirebaseDatabase.getInstance();
-        db.getReference(month).addListenerForSingleValueEvent(new ValueEventListener() {
+        db.getReference("CompanyNames").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ds = dataSnapshot;
@@ -83,15 +88,12 @@ public class PopulateList {
 
     private class FetchList extends AsyncTask<Void, Void, Void> {
         private ArrayList<Event> eventList;
-        private String companyName;
-        private String date = "";
-        private String time;
-        private String location;
-        private String website;
+        DatabaseReference dbEventList;
 
         @Override
         protected void onPreExecute() {
             eventList = new ArrayList<>();
+            dbEventList = db.getReference("CompanyNames");
         }
 
         @Override
@@ -101,10 +103,14 @@ public class PopulateList {
                 Document doc = Jsoup.connect(URL).get();
                 Element table = doc.select("div#text").first();
                 Iterator<Element> it = table.select("td[width=45%]").iterator();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMMM d,yyyy", Locale.CANADA);
 
                 int count = 0;
-                companyName = "";
-                location = "";
+                String companyName = "";
+                String location = "";
+                String time = "";
+                Date date = null;
+                URI website = null;
 
                 while (it.hasNext()) {
                     String info = it.next().text();
@@ -113,7 +119,12 @@ public class PopulateList {
                             companyName = info;
                             break;
                         case 1:
-                            date = info;
+                            try {
+                                date = dateFormat.parse(info);
+                            } catch (ParseException e) {
+                                Log.e(LOG_TAG, "Unable to parse date: " + info, e.getCause());
+                                e.printStackTrace();
+                            }
                             break;
                         case 2:
                             time = info;
@@ -122,11 +133,19 @@ public class PopulateList {
                             location = info;
                             break;
                         case 4:
-                            website = info;
                             if (!location.equals("")) {
                                 Event event = new Event(companyName, location, time, date);
-                                long voteFood = (long) ds.child(event.getDatabaseName()).child("voteFood").getValue();
-                                long voteShirt = (long) ds.child(event.getDatabaseName()).child("voteShirt").getValue();
+                                long voteFood, voteShirt;
+                                if (!ds.hasChild(event.getDatabaseName())) {
+                                    DatabaseReference dbEvent = dbEventList.child(event.getDatabaseName());
+                                    dbEvent.child("voteFood").setValue(0);
+                                    dbEvent.child("voteShirt").setValue(0);
+                                    voteFood = 0;
+                                    voteShirt = 0;
+                                } else {
+                                    voteFood = (long) ds.child(event.getDatabaseName()).child("voteFood").getValue();
+                                    voteShirt = (long) ds.child(event.getDatabaseName()).child("voteShirt").getValue();
+                                }
                                 event.setVoteFood(voteFood);
                                 event.setVoteShirt(voteShirt);
                                 eventList.add(event);
@@ -190,27 +209,27 @@ public class PopulateList {
                             companyName = info;
                             break;
                         case 1:
-                            date = info;
+                            //date = info;
                             break;
                         case 2:
-                            time = info;
+                            //time = info;
                             break;
                         case 3:
-                            location = info;
+                            //location = info;
                             break;
                         case 4:
-                            website = info;
+                            //website = info;
                             if (!location.equals("")) {
                                 int voteUp = 0;
                                 int voteDown = 0;
-                                Event event = new Event(companyName, location, time, date);
-                                event.setVoteFood(voteUp);
-                                event.setVoteShirt(voteDown);
+                                //Event event = new Event(companyName, location, time, date);
+                                //event.setVoteFood(voteUp);
+                                //event.setVoteShirt(voteDown);
 
-                                DatabaseReference dbEvent = dbEventList.child(event.getDatabaseName());
+                                DatabaseReference dbEvent = dbEventList.child(companyName);
                                 dbEvent.child("voteFood").setValue(0);
                                 dbEvent.child("voteShirt").setValue(0);
-                                eventList.add(event);
+                                //eventList.add(event);
                             }
                             break;
                     }

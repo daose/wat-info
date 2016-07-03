@@ -30,11 +30,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         this.eventList = eventList;
     }
 
+    //TODO: use viewholder after transition to description layout
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Event event = eventList.get(position);
         final String LOG_TAG = "position: " + position;
-
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event, parent, false);
@@ -44,7 +44,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         TextView companyName = (TextView) convertView.findViewById(R.id.eventName);
         TextView location = (TextView) convertView.findViewById(R.id.eventLocation);
         TextView time = (TextView) convertView.findViewById(R.id.eventTime);
-        TextView date = (TextView) convertView.findViewById(R.id.eventDate);
+        //TextView date = (TextView) convertView.findViewById(R.id.eventDate);
         TextView voteUp = (TextView) convertView.findViewById(R.id.voteUp);
         TextView voteDown = (TextView) convertView.findViewById(R.id.voteDown);
 
@@ -88,22 +88,23 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         companyName.setText(event.getName());
         location.setText(event.getLocation());
         time.setText(event.getTime());
-        date.setText(event.getDate());
+        //date.setText(event.getDate());
         voteUp.setText(String.valueOf(event.getVoteFood()));
         voteDown.setText(String.valueOf(event.getVoteShirt()));
 
         return convertView;
     }
 
+    //TODO: use "Save data as transactions" - Firebase
     private void updateData(final Event event, final String childName, final int amount) {
         this.notifyDataSetChanged();
 
-        FirebaseDatabase.getInstance().getReference(EventListActivity.month).child(event.getDatabaseName()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("CompanyNames").child(event.getDatabaseName()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long prev;
                 prev = (long) dataSnapshot.child(childName).getValue();
-                FirebaseDatabase.getInstance().getReference(EventListActivity.month).child(event.getDatabaseName()).child(childName).setValue(prev + amount);
+                FirebaseDatabase.getInstance().getReference("CompanyNames").child(event.getDatabaseName()).child(childName).setValue(prev + amount);
             }
 
             @Override
