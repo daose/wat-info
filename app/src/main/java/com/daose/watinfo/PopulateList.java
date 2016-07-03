@@ -18,6 +18,7 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
@@ -110,6 +111,7 @@ public class PopulateList {
                 String location = "";
                 String time = "";
                 Date date = null;
+                boolean isDateHeader = true;
                 URI website = null;
 
                 while (it.hasNext()) {
@@ -120,7 +122,12 @@ public class PopulateList {
                             break;
                         case 1:
                             try {
-                                date = dateFormat.parse(info);
+                                Date newDate = dateFormat.parse(info);
+                                Calendar.getInstance().get(Calendar.MONTH);
+                                if (date == null || !(date.getMonth() == newDate.getMonth() && date.getDay() == newDate.getDay())) {
+                                    isDateHeader = true;
+                                }
+                                date = newDate;
                             } catch (ParseException e) {
                                 Log.e(LOG_TAG, "Unable to parse date: " + info, e.getCause());
                                 e.printStackTrace();
@@ -134,6 +141,12 @@ public class PopulateList {
                             break;
                         case 4:
                             if (!location.equals("")) {
+                                if (isDateHeader) {
+                                    Event event = new Event(date);
+                                    eventList.add(event);
+                                    isDateHeader = false;
+                                }
+
                                 Event event = new Event(companyName, location, time, date);
                                 long voteFood, voteShirt;
                                 if (!ds.hasChild(event.getDatabaseName())) {
@@ -148,6 +161,7 @@ public class PopulateList {
                                 }
                                 event.setVoteFood(voteFood);
                                 event.setVoteShirt(voteShirt);
+
                                 eventList.add(event);
                             }
                             break;

@@ -25,32 +25,94 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
     private ArrayList<Event> eventList;
 
+    private enum RowType {
+        EVENT,
+        HEADER
+    }
+
+    private static class ViewHolder {
+        TextView companyName;
+        TextView location;
+        TextView time;
+        TextView date;
+        TextView voteUp;
+        TextView voteDown;
+        ImageButton voteFoodButton;
+        ImageButton voteShirtButton;
+    }
+
     public EventArrayAdapter(Context context, ArrayList<Event> eventList) {
         super(context, 0, eventList);
         this.eventList = eventList;
     }
 
+    @Override
+    public int getViewTypeCount() {
+        return RowType.values().length;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (eventList.get(position).isDateHeader()) {
+            return RowType.HEADER.ordinal();
+        } else {
+            return RowType.EVENT.ordinal();
+        }
+    }
+
     //TODO: use viewholder after transition to description layout
+    //TODO: gradient of colours for the shirt/food icon
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Event event = eventList.get(position);
         final String LOG_TAG = "position: " + position;
+        ViewHolder holder = null;
+        RowType rowType = RowType.values()[getItemViewType(position)];
+        Log.d(LOG_TAG, "rowType: " + rowType.toString());
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.event, parent, false);
+            holder = new ViewHolder();
+            switch (rowType) {
+                case EVENT:
+                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.event, parent, false);
+                    holder.companyName = (TextView) convertView.findViewById(R.id.eventName);
+                    holder.location = (TextView) convertView.findViewById(R.id.eventLocation);
+                    holder.time = (TextView) convertView.findViewById(R.id.eventTime);
+                    holder.voteUp = (TextView) convertView.findViewById(R.id.voteUp);
+                    holder.voteDown = (TextView) convertView.findViewById(R.id.voteDown);
+                    holder.voteFoodButton = (ImageButton) convertView.findViewById(R.id.voteFoodButton);
+                    holder.voteShirtButton = (ImageButton) convertView.findViewById(R.id.voteShirtButton);
+                    break;
+                case HEADER:
+                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.date, parent, false);
+                    holder.date = (TextView) convertView.findViewById(R.id.date);
+                    break;
+                default:
+                    break;
+            }
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
         final Animation buttonAnim = AnimationUtils.loadAnimation(convertView.getContext(), R.anim.anim_button);
 
-        TextView companyName = (TextView) convertView.findViewById(R.id.eventName);
-        TextView location = (TextView) convertView.findViewById(R.id.eventLocation);
-        TextView time = (TextView) convertView.findViewById(R.id.eventTime);
-        //TextView date = (TextView) convertView.findViewById(R.id.eventDate);
-        TextView voteUp = (TextView) convertView.findViewById(R.id.voteUp);
-        TextView voteDown = (TextView) convertView.findViewById(R.id.voteDown);
+        switch (rowType) {
+            case EVENT:
+                holder.companyName.setText(event.getName());
+                holder.location.setText(event.getLocation());
+                holder.time.setText(event.getTime());
+                holder.voteUp.setText(String.valueOf(event.getVoteFood()));
+                holder.voteDown.setText(String.valueOf(event.getVoteShirt()));
+                break;
+            case HEADER:
+                holder.date.setText(event.getDate().toString());
+                break;
+            default:
+                break;
+        }
 
-        final ImageButton voteFoodButton = (ImageButton) convertView.findViewById(R.id.voteFoodButton);
-        final ImageButton voteShirtButton = (ImageButton) convertView.findViewById(R.id.voteShirtButton);
-
+        //TODO: add voting capability in the detailed page
+        /*
         voteFoodButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,15 +145,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
             }
 
         });
-
-
-        companyName.setText(event.getName());
-        location.setText(event.getLocation());
-        time.setText(event.getTime());
-        //date.setText(event.getDate());
-        voteUp.setText(String.valueOf(event.getVoteFood()));
-        voteDown.setText(String.valueOf(event.getVoteShirt()));
-
+        */
         return convertView;
     }
 

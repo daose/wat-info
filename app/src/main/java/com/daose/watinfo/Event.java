@@ -17,6 +17,7 @@ public class Event implements Serializable {
     private long voteShirt;
     private boolean isFoodVoted;
     private boolean isShirtVoted;
+    private boolean isDateHeader;
     //faculty, specification?
 
     public Event(String name, String location, String time, Date date) {
@@ -24,8 +25,18 @@ public class Event implements Serializable {
         this.location = location;
         this.time = time;
         this.date = date;
+        isDateHeader = false;
         voteFood = 0;
         voteShirt = 0;
+    }
+
+    public Event(Date date) {
+        isDateHeader = true;
+        this.date = date;
+    }
+
+    public boolean isDateHeader() {
+        return isDateHeader;
     }
 
     public boolean isFoodVoted() {
@@ -45,7 +56,7 @@ public class Event implements Serializable {
     }
 
     public String getDatabaseName() {
-        return this.name.replace('.', '_');
+        return this.name.replace('.', '_').replace('#', '_');
     }
 
     public void setShirtVoted(boolean voted) {
