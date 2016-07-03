@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:background="@drawable/background"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.daose.watinfo.SplashActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
+            android:padding="20dp"
             android:textSize="40sp"
             android:layout_gravity="center"
+            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:text="WatInfo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:textSize="20sp"
+            android:padding="5dp"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:text="Free Food" />
@@ -32,6 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:textSize="20sp"
+            android:padding="5dp"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:text="Free Swag" />
@@ -40,8 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp"
+            android:padding="5dp"
             android:layout_height="wrap_content"
             android:text="Free Job Opportunities" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
